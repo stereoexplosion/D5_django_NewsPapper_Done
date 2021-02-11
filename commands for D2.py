@@ -62,6 +62,9 @@ Comment.dislike(Comment.objects.get(id=3))
 
 Comment.dislike(Comment.objects.get(id=4))
 
-Author.update_rating(Author.objects.get(id=1))
+Author.update_rating(Author.objects.get())
 
-Post.objects.get()
+#post = Post.objects.filter(1)
+#Author.objects.get(author='user1')
+Author.update_rating(Author.objects.filter(id=1))
+Author.update_rating(author_id=3)

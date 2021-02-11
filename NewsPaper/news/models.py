@@ -9,11 +9,10 @@ class Author(models.Model):
         posts = Post.objects.filter(author=self.id)  # все посты автора
         post_rating = sum([r.post_rating * 3 for r in posts])  # рейтинг каждого поста автора умножен на 3
         comment_rating = sum([r.comment_rating for r in
-                               Comment.objects.filter(author=self.author)])  # сумма лайков/дислайков к комментам автора
+                               Comment.objects.filter(author_id=self.id)])  # сумма лайков/дислайков к комментам автора
         all_to_post_comment_rating = sum([r.comment_rating for r in Comment.objects.filter(
             post__in=posts)])  # сумма лайков/дислайков всех комментов к постам автора
-        self.author_rating = post_rating + comment_rating + all_to_post_comment_rating
-        self.save()
+        self.author_rating == post_rating + comment_rating + all_to_post_comment_rating
 
     def __str__(self):
         return self.author.username
