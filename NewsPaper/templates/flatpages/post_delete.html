@@ -1,0 +1,29 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Удаление {% endblock title %}
+
+{% block content %}
+<h2>Вы действительно хотите удалить данную публикацию?</h2>
+<table>
+    <thead>
+        <th>
+            Заголовок
+        </th>
+        <th>
+            Дата публикации
+        </th>
+    </thead>
+    <tr>
+        <td>
+            {{ post.post_heading }}
+        </td>
+        <td>
+            {{ post.post_create_date }}
+        </td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %}
