@@ -1,10 +1,13 @@
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from django.core.paginator import Paginator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from .models import Author, Category, Post, Comment
 from .filters import NewsFilter
 from .forms import NewsForm
-
 
 class NewsList(ListView):
     template_name = 'flatpages/news.html'  # указываем имя шаблона, в котором будет лежать html, в котором будут все инструкции о том, как именно пользователю должны вывестись наши объекты
@@ -56,12 +59,18 @@ class NewsUpdateView(UpdateView):
         id = self.kwargs.get('pk')
         return Post.objects.get(pk=id)
 
+   # @method_decorator(login_required(login_url='/news'))
+    #class ProtectedView(LoginRequiredMixin, TemplateView):
+       # template_name = 'protected_page.html'
+
 
 # дженерик для удаления товара
 class NewsDeleteView(DeleteView):
     template_name = 'flatpages/post_delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
+
+
 
 
 

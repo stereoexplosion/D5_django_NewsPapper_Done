@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from .views import NewsList, NewsDetail, NewsSearch, NewsCreateView, NewsUpdateView, NewsDeleteView  # импортируем наше представление
+from django.contrib import admin
 
 
 
@@ -11,5 +12,9 @@ urlpatterns = [
     path('post_create', NewsCreateView.as_view(), name='create'),
     path('<int:pk>/edit', NewsUpdateView.as_view(), name='edit'),
     path('<int:pk>/delete', NewsDeleteView.as_view(), name='delete'),
+    path('admin/', admin.site.urls),
+    path('', include('protect.urls')),
+    path('sign/', include('sign.urls')),
+    path('accounts/', include('allauth.urls')),
     # т.к. сам по себе это класс, то нам надо представить этот класс в виде view. Для этого вызываем метод as_view
 ]
