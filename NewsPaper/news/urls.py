@@ -1,6 +1,7 @@
 from django.urls import path, include
-from .views import NewsList, NewsDetail, NewsSearch, NewsCreateView, NewsUpdateView, NewsDeleteView  # импортируем наше представление
+from .views import NewsList, NewsDetail, NewsSearch, NewsCreateView, NewsUpdateView, NewsDeleteView, KabinetView  # импортируем наше представление
 from django.contrib import admin
+
 
 
 
@@ -16,5 +17,6 @@ urlpatterns = [
     path('', include('protect.urls')),
     path('sign/', include('sign.urls')),
     path('accounts/', include('allauth.urls')),
+    path('kabinet', KabinetView.as_view()),
     # т.к. сам по себе это класс, то нам надо представить этот класс в виде view. Для этого вызываем метод as_view
 ]

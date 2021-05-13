@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from .models import Author, Category, Post, Comment
 from .filters import NewsFilter
@@ -44,15 +45,16 @@ class NewsSearch(ListView):
         return super().get(request, *args, **kwargs)
 
 # дженерик для создания объекта. Надо указать только имя шаблона и класс формы который мы написали в прошлом юните. Остальное он сделает за вас
-class NewsCreateView(CreateView):
+class NewsCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'flatpages/post_create.html'
     form_class = NewsForm
-
+    permission_required = ('news.add_post',)
 
 # дженерик для редактирования объекта
-class NewsUpdateView(UpdateView):
+class NewsUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'flatpages/post_create.html'
     form_class = NewsForm
+    permission_required = ('news.change_post',)
 
     # метод get_object мы используем вместо queryset, чтобы получить информацию об объекте который мы собираемся редактировать
     def get_object(self, **kwargs):
@@ -69,6 +71,14 @@ class NewsDeleteView(DeleteView):
     template_name = 'flatpages/post_delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
+
+class KabinetView(LoginRequiredMixin, TemplateView):
+    template_name = 'flatpages/kabinet.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
 
 
 
